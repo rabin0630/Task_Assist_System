@@ -14,5 +14,7 @@ class Attendance(BaseModel):
   #break_duration: int
   #total_elapsed_time: int
   
+  
+  
   class Config:
     orm_mode = True

@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 import models, schemas
+from datetime import datetime
 
 # ## Read
 
@@ -20,9 +21,11 @@ import models, schemas
 
 ### 出勤
 def stamp_clock_in(db: Session, attendance: schemas.Attendance):
+  
+  clean_time = attendance.clock_in.replace(microsecond=0) if attendance.clock_in else None
   db_clock_in = models.Attendance(
     work_date = attendance.work_date,# stamp_clock_inのattendance引数を使用
-    clock_in = attendance.clock_in
+    clock_in = clean_time
     ) ### インスタンスを生成して、db_clock_inにをいれる
   db.add(db_clock_in) ### インスタンス化したdb_clock_inをdbに追加する
   db.commit() ### addとcommitはgitと似ている
