@@ -1,6 +1,10 @@
 from sqlalchemy.orm import Session
 import models, schemas
 from datetime import datetime
+from sqlalchemy import update
+
+# データベースを操作する
+
 
 # ## Read
 
@@ -32,17 +36,21 @@ def stamp_clock_in(db: Session, attendance: schemas.Attendance):
   db.refresh(db_clock_in) ### 変更をしたらリフレッシュする必要はある
   return db_clock_in
 
-# # 退勤
-# def stamp_clock_out(db: Session, attendance: schemas.Attendance):
-#   db_clock_out = models.Attendance(
-#     work_date = attendance.work_date,# stamp_clock_inのattendance引数を使用
-#     clock_out = attendance.clock_out
-#     ) ### インスタンスを生成して、db_clock_inにをいれる
-#   db.add(db_clock_out) ### インスタンス化したdb_clock_inをdbに追加する
-#   db.commit() ### addとcommitはgitと似ている
-#   db.refresh(db_clock_out) ### 変更をしたらリフレッシュする必要はある
-#   return db_clock_out
+# 退勤
+def stamp_clock_out(db: Session, attendance: schemas.Attendance):
+  ### 1.データベースから情報を引っ張ってくる
+  clean_time = attendance.clck_out
+  db_clock_out = db.query(models.Attendance).filter(models.Attendance.work_date == attendance.work_date).first() # 一致しているデータを引っ張る
+  db_clock_out.clock_out = clean_time
+  db.commit() ### addとcommitはgitと似ている
+  db.refresh(db_clock_out) ### 変更をしたらリフレッシュする必要はある
+  return db_clock_out
 
+# from sqlalchemy import update
+
+# stmt = update(user_table).where(user_table.c.name == "sandy").values(fullname="Sandra Cheeks")
+# print(stmt)
+# # UPDATE user_account SET fullname=:fullname WHERE user_account.name = :name_1
 
 
 

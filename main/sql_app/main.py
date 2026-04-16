@@ -37,3 +37,7 @@ app.add_middleware(
 @app.post("/clock_in")
 async def create_attendance(attendance: schemas.Attendance ,db : Session = Depends(get_db)):
   return crud.stamp_clock_in(db=db,attendance=attendance)
+
+@app.post("/clock_out")
+async def update_attendance(attendance: schemas.Attendance ,db : Session = Depends(get_db)):
+  return crud.stamp_clock_out(db=db,attendance=attendance)

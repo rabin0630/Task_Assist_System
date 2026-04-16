@@ -52,11 +52,17 @@ async function sendAttendanceData(actionName) {
     const requestData = {
         work_date: now.toLocaleDateString('sv-SE'), // "YYYY-MM-DD" 形式
         clock_in: now.toTimeString().split(' ')[0],   // "HH:MM:SS" 形式
-        clock_out: null
+        clck_out: now.toTimeString().split(' ')[0]
     };
+    let type = null;
+    if (actionName === "出勤") {
+        type = "clock_in";
+    }else if (actionName === "退勤") {
+        type = "clock_out";
+        }
 
     try {
-        const response = await fetch(`${API_BASE_URL}/clock_in`, {
+        const response = await fetch(`${API_BASE_URL}/${type}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -69,6 +75,7 @@ async function sendAttendanceData(actionName) {
         console.error("通信失敗:", error);
         return false;
     }
+    
 }
 
 /**
@@ -94,7 +101,17 @@ function initializeButtonListeners() {
                 } else {
                     notifyActionResponse({ actionName: clickedActionName, hasError: true });
                 }
-            } else {
+            }else if(clickedActionName === "退勤") {
+                const isSuccess = await sendAttendanceData(clickedActionName);
+                
+                if (isSuccess) {
+                    notifyActionResponse({ actionName: clickedActionName, hasError: false });
+                    disableButton(targetButton);
+                } else {
+                    notifyActionResponse({ actionName: clickedActionName, hasError: true });
+                }
+
+            }else {
                 // 出勤以外（退勤・休憩など）はまだアラートのみ
                 notifyActionResponse({ actionName: clickedActionName, hasError: false });
                 disableButton(targetButton);
