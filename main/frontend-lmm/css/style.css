@@ -1,0 +1,155 @@
+/* 色の割合を調整するため変数を定義する。 */
+:root {
+    --color-blue-primary: #0d47a1;
+    --color-black-base: #333333;
+    --color-white-bg: #f5f5f5;
+    --color-pure-white: #ffffff;
+    --color-gray-disabled: #808080;
+    --color-gray-text: #cccccc;
+}
+
+body {
+    background-color: var(--color-white-bg);
+    color: var(--color-black-base);
+    margin: 0;
+    /* 画面全体でレイアウトを構成するためフレックスボックスを利用する。 */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* ヘッダーの背景を白にし、下部に境界線を追加して視認性を高める。 */
+.header {
+    background-color: var(--color-pure-white);
+    height: 15vh;
+    border-bottom: 1px solid #dddddd;
+}
+
+/* フッターは黒背景で固定する。 */
+.footer {
+    background-color: var(--color-black-base);
+    height: 15vh;
+}
+
+/* ナビゲーションを中央に配置する。 */
+.header-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    height: 100%;
+}
+
+/* ヘッダーのリンクをボタンと同じ外観に装飾する。 */
+.nav-link {
+    background-color: var(--color-blue-primary);
+    color: var(--color-white-bg);
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 10px 25px;
+    border-radius: 4px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.nav-link:hover {
+    opacity: 0.8;
+}
+
+/* メインコンテンツを画面中央に寄せる。 */
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+/* 現在時刻の表示スタイルを大きく強調する。 */
+.time {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 40px;
+}
+
+/* 操作ボタンを2つずつ中央で折り返すよう幅を制限する。 */
+.button-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    gap: 20px;
+    max-width: 400px;
+}
+
+/* 各リスト項目をボタン2つ分が収まる幅に調整する。 */
+.button-wrapper li {
+    flex: 0 1 calc(50% - 10px);
+    display: flex;
+    justify-content: center;
+}
+
+/* ボタンの基本スタイルを定義する。 */
+button {
+    background-color: var(--color-blue-primary);
+    color: var(--color-white-bg);
+    border: none;
+    padding: 20px 0;
+    width: 100%;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer; /* 通常時は指マークを表示する。 */
+    border-radius: 4px;
+    transition: background-color 0.3s, opacity 0.3s;
+}
+
+/* クリック可能であることを示すため透明度を変更する。 */
+button:hover {
+    opacity: 0.8;
+}
+
+/**
+ * 1日1回制限により無効化(disabled)された時のスタイルを定義する。
+ * 指マーク(pointer)を強制的に上書きし、禁止マーク(not-allowed)のみを表示する。
+ */
+button:disabled {
+    background-color: var(--color-gray-disabled) !important;
+    color: var(--color-gray-text) !important;
+    cursor: not-allowed !important; /* 強制的に禁止マークを適用する。 */
+    opacity: 1 !important;
+    pointer-events: auto; /* hover等を無効にしつつカーソル表示を維持する。 */
+}
+
+/* --- リストページ(list.html)用のスタイル --- */
+
+.main-list {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.attendance-table {
+    width: 90%;
+    max-width: 800px;
+    border-collapse: collapse;
+    background-color: var(--color-pure-white);
+    margin-top: 20px;
+}
+
+.attendance-table th, .attendance-table td {
+    border: 1px solid #dddddd;
+    padding: 12px;
+    text-align: center;
+}
+
+.attendance-table th {
+    background-color: var(--color-black-base);
+    color: var(--color-white-bg);
+}
+
+.attendance-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
