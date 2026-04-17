@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-import models, schemas
+import main.backend.sql_app.models as models, main.backend.sql_app.schemas as schemas
 from datetime import datetime
 from sqlalchemy import update
 

@@ -1,5 +1,5 @@
 from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, Time, Date
-from database import Base
+from main.backend.sql_app.database import Base
 from sqlalchemy.dialects.sqlite import TIME
 
 # データベースに登録したいことを入力

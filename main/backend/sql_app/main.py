@@ -2,8 +2,8 @@ from typing import List
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
-import crud, models, schemas
-from database import engine, SessionLocal
+import main.backend.sql_app.crud as crud, main.backend.sql_app.models as models, main.backend.sql_app.schemas as schemas
+from main.backend.sql_app.database import engine, SessionLocal
 
 # modelsのBaseを持ってくる Databaseの作成をしている。
 models.Base.metadata.create_all(bind=engine) # databaseのエンジンを使ってdatabaseの作成をしている。
