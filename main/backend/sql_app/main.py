@@ -2,9 +2,9 @@ from typing import List
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
-import main.backend.sql_app.crud as crud, main.backend.sql_app.models as models, main.backend.sql_app.schemas as schemas
-from main.backend.sql_app.database import engine, SessionLocal
-
+import crud,address,database,models,schemas
+from database import engine, SessionLocal
+import address
 # modelsのBaseを持ってくる Databaseの作成をしている。
 models.Base.metadata.create_all(bind=engine) # databaseのエンジンを使ってdatabaseの作成をしている。
 
@@ -28,10 +28,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# apiを作成する
-# @app.get("/")
-# async def index():
-#   return {"message","Success"}
+@app.get("/get_address")
+async def read_address(lat : float ,lng : float):
+  return await address.get_address(lat,lng)
 
 ### post
 @app.post("/clock_in")
@@ -40,4 +39,7 @@ async def create_attendance(attendance: schemas.Attendance ,db : Session = Depen
 
 @app.post("/clock_out")
 async def update_attendance(attendance: schemas.Attendance ,db : Session = Depends(get_db)):
+  print(attendance.work_date)
+  print(attendance.clock_out)
+  print(attendance.clock_out)
   return crud.stamp_clock_out(db=db,attendance=attendance)

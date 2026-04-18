@@ -52,7 +52,7 @@ async function sendAttendanceData(actionName) {
     const requestData = {
         work_date: now.toLocaleDateString('sv-SE'), // "YYYY-MM-DD" 形式
         clock_in: now.toTimeString().split(' ')[0],   // "HH:MM:SS" 形式
-        clck_out: now.toTimeString().split(' ')[0]
+        clock_out: now.toTimeString().split(' ')[0]
     };
     let type = null;
     if (actionName === "出勤") {

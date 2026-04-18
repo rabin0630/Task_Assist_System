@@ -1,8 +1,8 @@
 from sqlalchemy.orm import Session
-import main.backend.sql_app.models as models, main.backend.sql_app.schemas as schemas
+# import main.backend.sql_app.models as models, main.backend.sql_app.schemas as schemas
 from datetime import datetime
 from sqlalchemy import update
-
+import models,schemas
 # データベースを操作する
 
 
@@ -39,9 +39,11 @@ def stamp_clock_in(db: Session, attendance: schemas.Attendance):
 # 退勤
 def stamp_clock_out(db: Session, attendance: schemas.Attendance):
   ### 1.データベースから情報を引っ張ってくる
-  clean_time = attendance.clck_out
+  clean_time = attendance.clock_out
+  print(clean_time)
   db_clock_out = db.query(models.Attendance).filter(models.Attendance.work_date == attendance.work_date).first() # 一致しているデータを引っ張る
   db_clock_out.clock_out = clean_time
+  print(db_clock_out)
   db.commit() ### addとcommitはgitと似ている
   db.refresh(db_clock_out) ### 変更をしたらリフレッシュする必要はある
   return db_clock_out
