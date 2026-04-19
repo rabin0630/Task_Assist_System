@@ -28,9 +28,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+## get
 @app.get("/get_address")
 async def read_address(lat : float ,lng : float):
+  print(lat,lng)
   return await address.get_address(lat,lng)
+
+@app.get("/get_attendances")
+async def read_attendances(db : Session = Depends(get_db)):
+  return crud.get_attendances(db=db)
 
 ### post
 @app.post("/clock_in")
@@ -39,7 +45,4 @@ async def create_attendance(attendance: schemas.Attendance ,db : Session = Depen
 
 @app.post("/clock_out")
 async def update_attendance(attendance: schemas.Attendance ,db : Session = Depends(get_db)):
-  print(attendance.work_date)
-  print(attendance.clock_out)
-  print(attendance.clock_out)
   return crud.stamp_clock_out(db=db,attendance=attendance)

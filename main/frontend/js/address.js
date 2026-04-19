@@ -28,6 +28,7 @@ const getPosition = async (position) => {
 
 const notPosition = () => {
   addrText.textContent = "位置許可が必要です";
+  console.log("")
 };
 
 navigator.geolocation.getCurrentPosition(getPosition, notPosition);
