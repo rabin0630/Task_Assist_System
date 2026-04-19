@@ -1,22 +1,37 @@
-/**
- * 現在の年月と末日のデータを計算して返す
- */
-const baseurl = "http://127.0.0.1:8000/get_attendances";
+// リスト取得APIのURL
+const getAttendancesUrl = "http://127.0.0.1:8000/get_attendances";
 
+/**
+ * 現在の年月、今日の日付、およびその月の末日を計算して返す
+ * @returns {Object} year(年), month(1月開始), lastDay(月末日), day(今日の日付)
+ */
 function getCurrentMonthInfo() {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = now.getMonth(); // 0-11
-    const lastDay = new Date(year, month + 1, 0).getDate();
-    const day = now.getDate();
-    console.log(day);
-    return { year, month: month + 1, lastDay ,day};
+    const now = new Date(); // Dateクラスの実体（インスタンス）を生成
+    const year = now.getFullYear(); // 4桁の西暦を取得
+    const month = now.getMonth(); // 0〜11の数値で月を取得（1月は0）
+
+    // 月を人間が読みやすい1〜12の形式に補正して返す
+    return { year, month: month + 1};
+}
+
+/**
+ * 指定した年月の最終日（末日）の日数を取得する
+ * @param {number} year - 西暦（例: 2026）
+ * @param {number} month - 月（1月なら1、2月なら2を指定。内部で翌月として処理される）
+ * @returns {number} その月の末日（28〜31）
+ */
+function getMonthDate(year, month) {
+    // 日付に 0 を指定することで、指定した月の「前月の末日」を取得する
+    // 引数の month をそのまま使うことで、人間が指定した月の末日が返る仕組み
+    const lastDay = new Date(year, month, 0).getDate();
+    
+    return lastDay;
 }
 
 /**
  * 渡されたデータをもとにカレンダーを描画する
  */
-function renderAttendanceTable(year, month, lastDay,url) {
+function renderAttendanceTable(year, month, lastDay, url) {
     const tableBody = document.getElementById("attendance-body");
     const monthTitle = document.getElementById("month-title");
 
@@ -90,45 +105,21 @@ function renderAttendanceTable(year, month, lastDay,url) {
     });
 }
 
-/**
- * データベースから勤務実績を取得して返す
- */
-async function getAttendancesList() {
-    const url = `http://127.0.0.1:8000/get_attendances`;
-
-    try {
-        const res = await fetch(url);
-        if (!res.ok) throw new Error("ネットワークエラー");
-        
-        const data = await res.json();
-        return data; // ここでデータを返す
-    } catch (error) {
-        console.error("取得失敗:", error);
-        return []; // エラー時は処理が止まらないように空の配列などを返す
-    }
-}
-
-/**
- * データベースから勤務実績を取得して返す
- */
-function postAttendancesList(year, month, day, url) {
-    
-}
-
 
 /**
  * 初期化処理（制御の責務）
  */
 function initializeAttendanceList() {
     // 1. データを取得
-    const { year, month, lastDay, day} = getCurrentMonthInfo();
+    const { year, month } = getCurrentMonthInfo();
+
+    // 2. 月の日数を取得
+    const lastDay = getMonthDate(year,month);
     
     // 2. 描画を実行
-    renderAttendanceTable(year, month, lastDay);
+    renderAttendanceTable(year, month, lastDay, getAttendancesUrl);
 }
 
+
 // ページ読み込み時に実行
-// initializeAttendanceList();
-// getAttendancesList();
-    const { year, month, lastDay, day} = getCurrentMonthInfo();
-renderAttendanceTable(year,month,lastDay,baseurl);
+initializeAttendanceList();

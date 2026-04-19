@@ -49,16 +49,14 @@ async function sendAttendanceData(actionName) {
     const now = new Date();
     
     // APIが求める形式 (schemas.Attendance) に合わせる
-    const requestData = {
-        work_date: now.toLocaleDateString('sv-SE'), // "YYYY-MM-DD" 形式
-        clock_in: now.toTimeString().split(' ')[0],   // "HH:MM:SS" 形式
-        clock_out: now.toTimeString().split(' ')[0]
-    };
     let type = null;
+    let requestData = {work_date: now.toLocaleDateString('sv-SE')} // "YYYY-MM-DD" 形式
     if (actionName === "出勤") {
         type = "clock_in";
+        requestData.clock_in =  now.toTimeString().split(' ')[0]  // "HH:MM:SS" 形式
     }else if (actionName === "退勤") {
         type = "clock_out";
+        requestData.clock_out = now.toTimeString().split(' ')[0];
         }
 
     try {

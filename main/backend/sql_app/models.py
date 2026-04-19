@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, Time, Date
+from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, Time, Date, Interval
 from database import Base
 from sqlalchemy.dialects.sqlite import TIME
 
@@ -21,4 +21,4 @@ class Attendance(Base):
   clock_in = Column(TIME(truncate_microseconds=True), nullable=True) ### 出勤時刻（時刻）
   clock_out = Column(TIME(truncate_microseconds=True), nullable=True) ### 退勤時刻（時刻）
   # break_duration = Column(Integer, default=0) ### 休憩時間（分単位の整数：例 60）
-  # total_elapsed_time = Column(Integer, default=0) ### 実労働時間（分単位の整数：例 480）
+  total_elapsed_time = Column(String(8), nullable=True) ### 実労働時間（分単位の整数：例 480）

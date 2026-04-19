@@ -14,7 +14,7 @@ class Attendance(BaseModel):
   clock_in: Optional[datetime.time] = None
   clock_out: Optional[datetime.time] = None  # nullableの時はoptionalにする
   #break_duration: int
-  #total_elapsed_time: int
+  total_elapsed_time: Optional[str] = None
   
   
   
