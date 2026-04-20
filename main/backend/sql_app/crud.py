@@ -32,9 +32,9 @@ def stamp_clock_out(db: Session, attendance: schemas.Attendance):
         models.Attendance.work_date == attendance.work_date
     ).first()
 
-    if data_base and data_base.clock_in:
-        end = datetime.combine(data_base.work_date, attendance.clock_out)
-        start = datetime.combine(data_base.work_date, data_base.clock_in)
+    if data_base and data_base.clock_in: # type: ignore
+        end = datetime.combine(data_base.work_date, attendance.clock_out) # type: ignore
+        start = datetime.combine(data_base.work_date, data_base.clock_in) # type: ignore
         
         # 1. 差分を計算（timedelta）
         diff = end - start 
@@ -43,9 +43,9 @@ def stamp_clock_out(db: Session, attendance: schemas.Attendance):
         # そのまま str(diff) すると "8:30:00" のような形式になる
         diff_str = str(diff)
 
-        data_base.clock_out = attendance.clock_out
+        data_base.clock_out = attendance.clock_out # type: ignore
         # 3. 文字列として保存
-        data_base.total_elapsed_time = diff_str 
+        data_base.total_elapsed_time = diff_str  # type: ignore
         
         db.commit()
         db.refresh(data_base)
